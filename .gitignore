@@ -1,3 +1,25 @@
+!.gitignore
+*.class
+*.war
+bin/
+classes/
+target/
+target/*
+build/*
+build/
+/build
+*.ipr
+*.iml
+*.log
+\*.idea
+\idea
+.gradle
+.idea
+.out
+.build
+\out
+\build
+
 # Compiled class file
 *.class
 
@@ -15,7 +37,7 @@
 *.war
 *.nar
 *.ear
-*.zip
+*.zips
 *.tar.gz
 *.rar
 
