@@ -13,12 +13,12 @@ import com.nplusone.dto.TopicDto;
 @Service
 public class TopicService {
 
-    private final TopicRepository topicRepository;
+    private TopicRepository topicRepository;
 
-    @Autowired
-    public TopicService(TopicRepository topicRepository) {
+   // @Autowired
+    /*public TopicService(TopicRepository topicRepository) {
         this.topicRepository = topicRepository;
-    }
+    }*/
 
     public List<TopicDto> getTopics() {
         return topicRepository
@@ -29,8 +29,8 @@ public class TopicService {
     }
 
     public Topic getTopicByTopicId(Integer topicId) {
-        return topicRepository
+        return /*topicRepository
                 .findById(topicId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(RuntimeException::new);*/ null;
     }
 }

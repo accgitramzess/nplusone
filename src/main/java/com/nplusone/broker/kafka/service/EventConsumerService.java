@@ -14,6 +14,6 @@ public class EventConsumerService {
             containerFactory = "eventKafkaListenerContainerFactory"
     )
     private void listen(Event event) {
-
+        System.out.println(event);
     }
 }

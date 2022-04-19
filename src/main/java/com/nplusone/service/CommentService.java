@@ -13,12 +13,14 @@ import com.nplusone.dto.CommentDto;
 @Service
 public class CommentService {
 
-    private final CommentRepository commentRepository;
+    private  CommentRepository commentRepository;
 
-    @Autowired
-    public CommentService(CommentRepository commentRepository) {
+
+
+   // @Autowired
+    /*public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-    }
+    }*/
 
     public List<CommentDto> getComments() {
         return commentRepository

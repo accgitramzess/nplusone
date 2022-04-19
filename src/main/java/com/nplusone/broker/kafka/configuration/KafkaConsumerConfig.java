@@ -3,6 +3,8 @@ package com.nplusone.broker.kafka.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -22,24 +24,26 @@ public class KafkaConsumerConfig {
     private String kafkaServer;
 
     @Bean
-    private Map<String, Object> kafkaConsumerEventConfigs() {
+    public ConsumerFactory<String, Event> kafkaConsumerEventFactory() {
+
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "event_group");
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer = "localhost:9092");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongSerializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, new JsonDeserializer<>(Event.class));
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        return props;
+        JsonDeserializer<Event> eventJsonDeserializer = new JsonDeserializer<>(Event.class);
+        eventJsonDeserializer.setRemoveTypeHeaders(false);
+        eventJsonDeserializer.addTrustedPackages("*");
+        eventJsonDeserializer.setUseTypeMapperForKey(true);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, eventJsonDeserializer);
+
+
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), eventJsonDeserializer);
     }
 
     @Bean
-    private ConsumerFactory<Long, Event> kafkaConsumerEventFactory() {
-        return new DefaultKafkaConsumerFactory<>(kafkaConsumerEventConfigs());
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<Long, Event> eventKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<Long, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, Event> eventKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(kafkaConsumerEventFactory());
 
         return factory;

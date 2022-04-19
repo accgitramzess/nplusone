@@ -9,10 +9,10 @@ import com.nplusone.broker.kafka.dto.Event;
 @Service
 public class EventProducerService {
 
-    private final KafkaTemplate<Long, Event> kafkaEventTemplate;
+    private final KafkaTemplate<String, Event> kafkaEventTemplate;
 
     @Autowired
-    public EventProducerService(KafkaTemplate<Long, Event> kafkaEventTemplate) {
+    public EventProducerService(KafkaTemplate<String, Event> kafkaEventTemplate) {
         this.kafkaEventTemplate = kafkaEventTemplate;
     }
 
